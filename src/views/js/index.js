@@ -1,5 +1,3 @@
-const { emit } = require("nodemon")
-
 const socket = io()
 
 // function statusConection(){
@@ -16,12 +14,39 @@ const socket = io()
 //     statusConection()
 // })
 
-socket.on("welcome",(data)=>{
-    const text = document.querySelector("#text")
-    text.textContent = data
+// socket.on("welcome",(data)=>{
+//     const text = document.querySelector("#text")
+//     text.textContent = data
+// })
+
+// const emitToServer = document.querySelector("#emit-to-server")
+// emitToServer.addEventListener("click", ()=>{
+//     socket.emit("server", "Hola, servidor")
+// })
+
+socket.on("move circle", position=>{
+    circle.style.top = position.top
+    circle.style.left = position.left
 })
 
-const emitToServer = document.querySelector("#emit-to-server")
-emitToServer.addEventListener("click", ()=>{
-    socket.emit("server", "Hola, servidor")
+
+const drag = e =>{
+    const clientX = e.clientX
+    const clientY = e.clientY
+
+    socket.emit("circle position",{
+        top: clientY + "px",
+        left: clientX + "px"
+    })
+}
+
+let circle = document.getElementById("circle")
+circle.addEventListener("mousedown", e => {
+    console.log("event downmouse");
+    circle.addEventListener("mousemove", drag)
+})
+
+circle.addEventListener("mouseup", e=>{
+    console.log("anything");
+    circle.removeEventListener("mousemove",drag)
 })

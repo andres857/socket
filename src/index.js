@@ -26,6 +26,9 @@ io.on("connection", socket=>{
     socket.on("server", data=>{
         console.log(data);
     })
+    socket.on("circle position", position => {
+        io.emit("move circle", position)
+    })
 })
 
 httpServer.listen(3000,()=>{
